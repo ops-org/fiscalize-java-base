@@ -22,7 +22,7 @@ public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
 		Session session = sessionFactory.getCurrentSession();
 		
 		// Pega notaFiscalId aleatória da maneira rápida
-		String sql = "SELECT notaFiscalId FROM NotaFiscal JOIN (SELECT CEIL(RAND() * (SELECT MAX(notaFiscalId) FROM NotaFiscal)) AS id) AS Random WHERE NotaFiscal.notaFiscalId >= Random.id LIMIT 1";
+		String sql = "SELECT notaFiscalId FROM NotaFiscal JOIN (SELECT CEIL(RAND() * (SELECT MAX(notaFiscalId) FROM NotaFiscal)) AS id) AS Random WHERE NotaFiscal.notaFiscalId >= Random.id AND valor>0 LIMIT 1";
         SQLQuery query = session.createSQLQuery(sql);
         query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 		List data = query.list();
@@ -31,13 +31,14 @@ public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
         if(data.size()>0) {
         	Map row = (Map) data.get(0);
             
-            Integer notaFiscalId = (Integer) row.get("notaFiscalId"); 
+            Integer notaFiscalId = (Integer) row.get("notaFiscalId");
             
             Criteria criteria = sessionFactory.getCurrentSession().createCriteria(NotaFiscal.class);
             if(notaFiscalId!=null) {
          	   criteria.add(Restrictions.eq("notaFiscalId", notaFiscalId));
+            } else {
+            	criteria.add(Restrictions.sqlRestriction("valor>0 ORDER BY RAND()")); // se não pegou notaFiscalId, pega aleatório de maneira lenta
             }
-            criteria.add(Restrictions.sqlRestriction("1=1 ORDER BY RAND()")); // se não pegou notaFiscalId, pega aleatório de maneira lenta
             criteria.setMaxResults(1);
             
             retorno = (NotaFiscal) criteria.uniqueResult();
