@@ -22,7 +22,7 @@ public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
 		Session session = sessionFactory.getCurrentSession();
 		
 		// Pega notaFiscalId aleatória da maneira rápida
-		String sql = "SELECT notaFiscalId FROM NotaFiscal JOIN (SELECT CEIL(RAND() * (SELECT MAX(notaFiscalId) FROM NotaFiscal)) AS id) AS Random WHERE NotaFiscal.notaFiscalId >= Random.id AND valor>0 LIMIT 1";
+		String sql = "SELECT notaFiscalId FROM NotaFiscal JOIN (SELECT CEIL(RAND() * (SELECT MAX(notaFiscalId) FROM NotaFiscal)) AS id) AS Random WHERE NotaFiscal.notaFiscalId >= Random.id LIMIT 1";
         SQLQuery query = session.createSQLQuery(sql);
         query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 		List data = query.list();
