@@ -7,6 +7,8 @@ public class PedidoNota {
 	private int partidoId;
 	private int parlamentarId;
 
+	private int quantidade;
+	
 	public String getTokenId() {
 		return tokenId;
 	}
@@ -24,6 +26,12 @@ public class PedidoNota {
 	}
 	public void setParlamentarId(int parlamentarId) {
 		this.parlamentarId = parlamentarId;
+	}
+	public int getQuantidade() {
+		return quantidade;
+	}
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
 	}
 
 }

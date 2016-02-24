@@ -17,7 +17,7 @@ public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
 
     
     @SuppressWarnings("rawtypes")
-	public NotaFiscal pegarRandomica(PedidoNota pedidoNota, int usuarioId) {
+	public NotaFiscal pegarRandomica(PedidoNota pedidoNota) {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
