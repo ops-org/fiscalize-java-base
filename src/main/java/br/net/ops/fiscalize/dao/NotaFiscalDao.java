@@ -33,7 +33,7 @@ public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
             
             Integer notaFiscalId = (Integer) row.get("notaFiscalId");
             
-            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(NotaFiscal.class);
+            Criteria criteria = session.createCriteria(NotaFiscal.class);
             if(notaFiscalId!=null) {
          	   criteria.add(Restrictions.eq("notaFiscalId", notaFiscalId));
             } else {
