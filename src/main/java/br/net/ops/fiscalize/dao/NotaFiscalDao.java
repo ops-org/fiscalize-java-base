@@ -3,6 +3,7 @@ package br.net.ops.fiscalize.dao;
 import java.util.List;
 import java.util.Map;
 
+import br.net.ops.fiscalize.util.Utilidade;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -15,36 +16,44 @@ import br.net.ops.fiscalize.pojo.PedidoNota;
 @Repository
 public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
 
-    
-    @SuppressWarnings("rawtypes")
-	public NotaFiscal pegarRandomica(PedidoNota pedidoNota) {
-		
-		Session session = sessionFactory.getCurrentSession();
-		
-		// Pega notaFiscalId aleatória da maneira rápida
-		String sql = "SELECT notaFiscalId FROM NotaFiscal JOIN (SELECT CEIL(RAND() * (SELECT MAX(notaFiscalId) FROM NotaFiscal)) AS id) AS Random WHERE NotaFiscal.notaFiscalId >= Random.id LIMIT 1";
+    // Retorna uma nota aleatoria de acordo com os parametros de pedidoNota.
+    // Se nao achar, retorna qualquer uma.
+    public NotaFiscal pegarRandomica(PedidoNota pedidoNota) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        // Selecionar notaFiscalIds passiveis de consulta
+        String sql = "SELECT notaFiscalId FROM NotaFiscal, Parlamentar"
+                + " WHERE NotaFiscal.parlamentarId = Parlamentar.parlamentarId";
+
+        if(pedidoNota.getParlamentarId()!=0) {
+            sql += " AND NotaFiscal.parlamentarId = " + pedidoNota.getParlamentarId();
+        }
+
+        if(pedidoNota.getPartidoId()!=0) {
+            sql += " AND Parlamentar.partidoId = " + pedidoNota.getPartidoId();
+        }
+
         SQLQuery query = session.createSQLQuery(sql);
         query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-		List data = query.list();
-        
-        NotaFiscal retorno = null;
+        List data = query.list();
+
+        Integer notaFiscalId = null;
         if(data.size()>0) {
-        	Map row = (Map) data.get(0);
-            
-            Integer notaFiscalId = (Integer) row.get("notaFiscalId");
-            
-            Criteria criteria = session.createCriteria(NotaFiscal.class);
-            if(notaFiscalId!=null) {
-         	   criteria.add(Restrictions.eq("notaFiscalId", notaFiscalId));
-            } else {
-            	criteria.add(Restrictions.sqlRestriction("ORDER BY RAND()")); // se não pegou notaFiscalId, pega aleatório de maneira lenta
-            }
-            criteria.setMaxResults(1);
-            
-            retorno = (NotaFiscal) criteria.uniqueResult();
+            int random = Utilidade.randomInteger(0, data.size());
+            Map row = (Map) data.get(random);
+            notaFiscalId = (Integer) row.get("notaFiscalId");
         }
-        
-		return retorno;
-	}
+
+        Criteria criteria = session.createCriteria(NotaFiscal.class);
+        if(notaFiscalId!=null) {
+            criteria.add(Restrictions.eq("notaFiscalId", notaFiscalId));
+        } else {
+            criteria.add(Restrictions.sqlRestriction("1=1 ORDER BY RAND()")); // se não pegou notaFiscalId, pega aleatório de maneira lenta
+        }
+        criteria.setMaxResults(1);
+
+        return (NotaFiscal) criteria.uniqueResult();
+    }
 	
 }

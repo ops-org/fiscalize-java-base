@@ -1,6 +1,7 @@
 package br.net.ops.fiscalize.util;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -54,6 +55,12 @@ public class Utilidade {
 			}
 		}
 		return logger;
+	}
+
+	public static int randomInteger(int min, int max) {
+		Random rand = new Random();
+		int randomNum = rand.nextInt((max - min) + 1) + min;
+		return randomNum;
 	}
 	
 }
