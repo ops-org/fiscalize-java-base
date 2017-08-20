@@ -18,7 +18,6 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import br.net.ops.fiscalize.exception.DespesaReflectionException;
 
@@ -30,7 +29,7 @@ import br.net.ops.fiscalize.exception.DespesaReflectionException;
 })
 
 @Entity
-@Table(uniqueConstraints=@UniqueConstraint(columnNames={"ideCadastro", "nuCarteiraParlamentar", "nuLegislatura", 
+@Table(uniqueConstraints=@UniqueConstraint(columnNames={"idecadastro", "nuCarteiraParlamentar", "nuLegislatura",
 		"numAno", "numMes", "numLote", "txtCNPJCPF", "codLegislatura", "datEmissao", "numParcela", 
 		"txtNumero", "txtPassageiro", "vlrLiquido", "numRessarcimento", "vlrDocumento"}))
 public class Despesa {
@@ -42,7 +41,7 @@ public class Despesa {
 	private Integer despesaId;
 
 	public String txNomeParlamentar;
-	public String ideCadastro;
+	public String idecadastro;
 	public String nuCarteiraParlamentar;
 	public String nuLegislatura;
 	public String sgUF;
@@ -149,11 +148,11 @@ public class Despesa {
 	public void setTxNomeParlamentar(String txNomeParlamentar) {
 		this.txNomeParlamentar = txNomeParlamentar;
 	}
-	public String getIdeCadastro() {
-		return ideCadastro;
+	public String getIdecadastro() {
+		return idecadastro;
 	}
-	public void setIdeCadastro(String ideCadastro) {
-		this.ideCadastro = ideCadastro;
+	public void setIdecadastro(String idecadastro) {
+		this.idecadastro = idecadastro;
 	}
 	public String getNuCarteiraParlamentar() {
 		return nuCarteiraParlamentar;

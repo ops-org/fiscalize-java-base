@@ -25,7 +25,7 @@ public class DespesaDao extends HibernateGenericDao<Despesa, Integer> {
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> selecionarParlamentares() {
-		Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT DISTINCT txNomeParlamentar as nomeParlamentar, sgPartido as sigla, ideCadastro FROM Despesa");
+		Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT DISTINCT txNomeParlamentar as nomeParlamentar, sgPartido as sigla, idecadastro FROM Despesa");
 		return query.list();
 	}
 	
