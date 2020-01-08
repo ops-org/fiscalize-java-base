@@ -1,6 +1,6 @@
 package br.net.ops.fiscalize.domain;
 
-import java.util.Date;
+import com.google.gson.annotations.Expose;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,103 +10,111 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.Date;
 
-import com.google.gson.annotations.Expose;
-
-@Entity
+@Entity(name = "suspeita")
 public class Suspeita {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Expose private Integer suspeitaId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
+    private Integer suspeitaId;
 
-	@Expose private Boolean suspeita;
-	@Expose private Boolean suspeitaValor;
-	@Expose private Boolean suspeitaObjeto;
-	@Expose private Boolean suspeitaBeneficiario;
-	@Expose private String comentarios;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Expose private Date dataInclusao;
+    @Expose
+    private Boolean suspeita;
+    @Expose
+    private Boolean suspeitaValor;
+    @Expose
+    private Boolean suspeitaObjeto;
+    @Expose
+    private Boolean suspeitaBeneficiario;
+    @Expose
+    private String comentarios;
 
-	@ManyToOne
-	@JoinColumn(name="notaFiscalId")
-	@Expose private NotaFiscal notaFiscal;
-	
-	@ManyToOne
-	@JoinColumn(name="usuarioId")
-	@Expose private Usuario usuario;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Expose
+    private Date dataInclusao;
 
-	public Integer getSuspeitaId() {
-		return suspeitaId;
-	}
+    @ManyToOne
+    @JoinColumn(name = "notaFiscalId")
+    @Expose
+    private NotaFiscal notaFiscal;
 
-	public void setSuspeitaId(Integer suspeitaId) {
-		this.suspeitaId = suspeitaId;
-	}
+    @ManyToOne
+    @JoinColumn(name = "usuarioId")
+    @Expose
+    private Usuario usuario;
 
-	public Boolean getSuspeita() {
-		return suspeita;
-	}
+    public Integer getSuspeitaId() {
+        return suspeitaId;
+    }
 
-	public void setSuspeita(Boolean suspeita) {
-		this.suspeita = suspeita;
-	}
+    public void setSuspeitaId(Integer suspeitaId) {
+        this.suspeitaId = suspeitaId;
+    }
 
-	public Boolean getSuspeitaValor() {
-		return suspeitaValor;
-	}
+    public Boolean getSuspeita() {
+        return suspeita;
+    }
 
-	public void setSuspeitaValor(Boolean suspeitaValor) {
-		this.suspeitaValor = suspeitaValor;
-	}
+    public void setSuspeita(Boolean suspeita) {
+        this.suspeita = suspeita;
+    }
 
-	public Boolean getSuspeitaObjeto() {
-		return suspeitaObjeto;
-	}
+    public Boolean getSuspeitaValor() {
+        return suspeitaValor;
+    }
 
-	public void setSuspeitaObjeto(Boolean suspeitaObjeto) {
-		this.suspeitaObjeto = suspeitaObjeto;
-	}
+    public void setSuspeitaValor(Boolean suspeitaValor) {
+        this.suspeitaValor = suspeitaValor;
+    }
 
-	public Boolean getSuspeitaBeneficiario() {
-		return suspeitaBeneficiario;
-	}
+    public Boolean getSuspeitaObjeto() {
+        return suspeitaObjeto;
+    }
 
-	public void setSuspeitaBeneficiario(Boolean suspeitaBeneficiario) {
-		this.suspeitaBeneficiario = suspeitaBeneficiario;
-	}
+    public void setSuspeitaObjeto(Boolean suspeitaObjeto) {
+        this.suspeitaObjeto = suspeitaObjeto;
+    }
 
-	public String getComentarios() {
-		return comentarios;
-	}
+    public Boolean getSuspeitaBeneficiario() {
+        return suspeitaBeneficiario;
+    }
 
-	public void setComentarios(String comentarios) {
-		this.comentarios = comentarios;
-	}
+    public void setSuspeitaBeneficiario(Boolean suspeitaBeneficiario) {
+        this.suspeitaBeneficiario = suspeitaBeneficiario;
+    }
 
-	public Date getDataInclusao() {
-		return dataInclusao;
-	}
+    public String getComentarios() {
+        return comentarios;
+    }
 
-	public void setDataInclusao(Date dataInclusao) {
-		this.dataInclusao = dataInclusao;
-	}
+    public void setComentarios(String comentarios) {
+        this.comentarios = comentarios;
+    }
 
-	public NotaFiscal getNotaFiscal() {
-		return notaFiscal;
-	}
+    public Date getDataInclusao() {
+        return dataInclusao;
+    }
 
-	public void setNotaFiscal(NotaFiscal notaFiscal) {
-		this.notaFiscal = notaFiscal;
-	}
+    public void setDataInclusao(Date dataInclusao) {
+        this.dataInclusao = dataInclusao;
+    }
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+    public NotaFiscal getNotaFiscal() {
+        return notaFiscal;
+    }
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-	
+    public void setNotaFiscal(NotaFiscal notaFiscal) {
+        this.notaFiscal = notaFiscal;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
 }

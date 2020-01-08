@@ -1,14 +1,12 @@
 package br.net.ops.fiscalize.dao;
 
-import java.util.List;
-
+import br.net.ops.fiscalize.domain.Partido;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 
-import br.net.ops.fiscalize.domain.Partido;
+import java.util.List;
 
 @Repository
 public class PartidoDao extends HibernateGenericDao<Partido, Integer> {

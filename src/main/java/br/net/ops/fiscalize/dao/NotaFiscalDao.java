@@ -1,8 +1,7 @@
 package br.net.ops.fiscalize.dao;
 
-import java.util.List;
-import java.util.Map;
-
+import br.net.ops.fiscalize.domain.NotaFiscal;
+import br.net.ops.fiscalize.pojo.PedidoNota;
 import br.net.ops.fiscalize.util.Utilidade;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
@@ -10,8 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import br.net.ops.fiscalize.domain.NotaFiscal;
-import br.net.ops.fiscalize.pojo.PedidoNota;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
@@ -23,15 +22,15 @@ public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
         Session session = sessionFactory.getCurrentSession();
 
         // Selecionar notaFiscalIds passiveis de consulta
-        String sql = "SELECT notaFiscalId FROM NotaFiscal, Parlamentar"
-                + " WHERE NotaFiscal.parlamentarId = Parlamentar.parlamentarId";
+        String sql = "SELECT notaFiscalId FROM notafiscal, parlamentar"
+                + " WHERE notafiscal.parlamentarId = parlamentar.parlamentarId";
 
-        if(pedidoNota.getParlamentarId()!=0) {
-            sql += " AND NotaFiscal.parlamentarId = " + pedidoNota.getParlamentarId();
+        if (pedidoNota.getParlamentarId() != 0) {
+            sql += " AND notafiscal.parlamentarId = " + pedidoNota.getParlamentarId();
         }
 
-        if(pedidoNota.getPartidoId()!=0) {
-            sql += " AND Parlamentar.partidoId = " + pedidoNota.getPartidoId();
+        if (pedidoNota.getPartidoId() != 0) {
+            sql += " AND parlamentar.partidoId = " + pedidoNota.getPartidoId();
         }
 
         SQLQuery query = session.createSQLQuery(sql);
@@ -39,14 +38,14 @@ public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
         List data = query.list();
 
         Integer notaFiscalId = null;
-        if(data.size()>0) {
+        if (data.size() > 0) {
             int random = Utilidade.randomInteger(0, data.size());
             Map row = (Map) data.get(random);
             notaFiscalId = (Integer) row.get("notaFiscalId");
         }
 
         Criteria criteria = session.createCriteria(NotaFiscal.class);
-        if(notaFiscalId!=null) {
+        if (notaFiscalId != null) {
             criteria.add(Restrictions.eq("notaFiscalId", notaFiscalId));
         } else {
             criteria.add(Restrictions.sqlRestriction("1=1 ORDER BY RAND()")); // se não pegou notaFiscalId, pega aleatório de maneira lenta
@@ -55,5 +54,5 @@ public class NotaFiscalDao extends HibernateGenericDao<NotaFiscal, Integer> {
 
         return (NotaFiscal) criteria.uniqueResult();
     }
-	
+
 }

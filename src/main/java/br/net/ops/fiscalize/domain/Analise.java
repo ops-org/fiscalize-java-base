@@ -1,5 +1,7 @@
 package br.net.ops.fiscalize.domain;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,63 +9,66 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.google.gson.annotations.Expose;
-
-@Entity
+@Entity(name = "analise")
 public class Analise {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Expose private Integer analiseId;
-	@Expose private Boolean concluida;
-	@Expose private String comentarios;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
+    private Integer analiseId;
+    @Expose
+    private Boolean concluida;
+    @Expose
+    private String comentarios;
 
-	@ManyToOne
-	@JoinColumn(name="notaFiscalId")
-	@Expose private NotaFiscal notaFiscal;
-	
-	@ManyToOne
-	@JoinColumn(name="responsavelUsuarioId")
-	@Expose private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "notaFiscalId")
+    @Expose
+    private NotaFiscal notaFiscal;
 
-	public Integer getAnaliseId() {
-		return analiseId;
-	}
+    @ManyToOne
+    @JoinColumn(name = "responsavelUsuarioId")
+    @Expose
+    private Usuario usuario;
 
-	public void setAnaliseId(Integer analiseId) {
-		this.analiseId = analiseId;
-	}
+    public Integer getAnaliseId() {
+        return analiseId;
+    }
 
-	public Boolean getConcluida() {
-		return concluida;
-	}
+    public void setAnaliseId(Integer analiseId) {
+        this.analiseId = analiseId;
+    }
 
-	public void setConcluida(Boolean concluida) {
-		this.concluida = concluida;
-	}
+    public Boolean getConcluida() {
+        return concluida;
+    }
 
-	public String getComentarios() {
-		return comentarios;
-	}
+    public void setConcluida(Boolean concluida) {
+        this.concluida = concluida;
+    }
 
-	public void setComentarios(String comentarios) {
-		this.comentarios = comentarios;
-	}
+    public String getComentarios() {
+        return comentarios;
+    }
 
-	public NotaFiscal getNotaFiscal() {
-		return notaFiscal;
-	}
+    public void setComentarios(String comentarios) {
+        this.comentarios = comentarios;
+    }
 
-	public void setNotaFiscal(NotaFiscal notaFiscal) {
-		this.notaFiscal = notaFiscal;
-	}
+    public NotaFiscal getNotaFiscal() {
+        return notaFiscal;
+    }
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+    public void setNotaFiscal(NotaFiscal notaFiscal) {
+        this.notaFiscal = notaFiscal;
+    }
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-	
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
 }

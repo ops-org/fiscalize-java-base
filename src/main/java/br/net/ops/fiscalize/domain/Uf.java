@@ -1,6 +1,6 @@
 package br.net.ops.fiscalize.domain;
 
-import java.util.List;
+import com.google.gson.annotations.Expose;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,64 +8,66 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.List;
 
-import com.google.gson.annotations.Expose;
-
-@Entity
+@Entity(name = "uf")
 public class Uf {
 
-	public static final String SEM_SIGLA_UF = "XX";
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Expose private Integer ufId;
-	@Expose private String sigla;
-	@Expose private String nome;
-	
-	@OneToMany(mappedBy="cota", fetch = FetchType.LAZY)
-	private List<NotaFiscal> notasFiscais = null;
+    public static final String SEM_SIGLA_UF = "XX";
 
-	public String toString() {
-		return String.valueOf(nome) + " - " + String.valueOf(sigla);
-	}
-	
-	public static String retornarUfNotNull(String uf) {
-		if(uf==null || uf.equals("")) {
-			uf = Uf.SEM_SIGLA_UF;
-		}
-		return uf;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
+    private Integer ufId;
+    @Expose
+    private String sigla;
+    @Expose
+    private String nome;
 
-	public Integer getUfId() {
-		return ufId;
-	}
+    @OneToMany(mappedBy = "cota", fetch = FetchType.LAZY)
+    private List<NotaFiscal> notasFiscais = null;
 
-	public void setUfId(Integer ufId) {
-		this.ufId = ufId;
-	}
+    public static String retornarUfNotNull(String uf) {
+        if (uf == null || uf.equals("")) {
+            uf = Uf.SEM_SIGLA_UF;
+        }
+        return uf;
+    }
 
-	public String getSigla() {
-		return sigla;
-	}
+    public String toString() {
+        return String.valueOf(nome) + " - " + String.valueOf(sigla);
+    }
 
-	public void setSigla(String sigla) {
-		this.sigla = sigla;
-	}
+    public Integer getUfId() {
+        return ufId;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public void setUfId(Integer ufId) {
+        this.ufId = ufId;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public String getSigla() {
+        return sigla;
+    }
 
-	public List<NotaFiscal> getNotasFiscais() {
-		return notasFiscais;
-	}
+    public void setSigla(String sigla) {
+        this.sigla = sigla;
+    }
 
-	public void setNotasFiscais(List<NotaFiscal> notasFiscais) {
-		this.notasFiscais = notasFiscais;
-	}
-	
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public List<NotaFiscal> getNotasFiscais() {
+        return notasFiscais;
+    }
+
+    public void setNotasFiscais(List<NotaFiscal> notasFiscais) {
+        this.notasFiscais = notasFiscais;
+    }
+
 }

@@ -1,10 +1,9 @@
 package br.net.ops.fiscalize.domain;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
+import br.net.ops.fiscalize.exception.DespesaReflectionException;
+import org.apache.commons.beanutils.BeanUtils;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,61 +13,57 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
-
-import br.net.ops.fiscalize.exception.DespesaReflectionException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
 @NamedQueries({
         @NamedQuery(
                 name = "findAllDespesas",
-                query = "FROM Despesa despesa ORDER BY despesa.despesaId"
+                query = "FROM despesa despesa ORDER BY despesa.despesaId"
         )
 })
 
-@Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"idecadastro", "nuCarteiraParlamentar", "nuLegislatura",
-        "numAno", "numMes", "numLote", "txtCNPJCPF", "codLegislatura", "datEmissao", "numParcela",
-        "txtNumero", "txtPassageiro", "vlrLiquido", "numRessarcimento", "vlrDocumento"}))
+@Entity(name = "despesa")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"idDeputado", "numeroCarteiraParlamentar", "legislatura",
+        "ano", "mes", "lote", "cnpjCPF", "codigoLegislatura", "dataEmissao", "parcela", "fornecedor",
+        "numero", "passageiro", "valorLiquido", "ressarcimento", "valorDocumento"}))
 public class Despesa {
 
     private static final String TABELA_DESPESA = "Despesa";
-
+    public String nomeParlamentar;
+    public String idDeputado;
+    public String numeroCarteiraParlamentar;
+    public String legislatura;
+    public String siglaUF;
+    public String siglaPartido;
+    public String codigoLegislatura;
+    public String numeroSubCota;
+    public String descricao;
+    public String numeroEspecificacaoSubCota;
+    public String descricaoEspecificacao;
+    public String fornecedor;
+    public String cnpjCPF;
+    public String numero;
+    public String tipoDocumento;
+    public String dataEmissao;
+    public String valorDocumento;
+    public String valorGlosa;
+    public String valorLiquido;
+    public String mes;
+    public String ano;
+    public String parcela;
+    public String passageiro;
+    public String trecho;
+    public String lote;
+    public String ressarcimento;
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date dataInclusao;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer despesaId;
-
-    public String txNomeParlamentar;
-    public String idecadastro;
-    public String nuCarteiraParlamentar;
-    public String nuLegislatura;
-    public String sgUF;
-    public String sgPartido;
-    public String codLegislatura;
-    public String numSubCota;
-    public String txtDescricao;
-    public String numEspecificacaoSubCota;
-    public String txtDescricaoEspecificacao;
-    public String txtFornecedor;
-    public String txtCNPJCPF;
-    public String txtNumero;
-    public String indTipoDocumento;
-    public String datEmissao;
-    public String vlrDocumento;
-    public String vlrGlosa;
-    public String vlrLiquido;
-    public String numMes;
-    public String numAno;
-    public String numParcela;
-    public String txtPassageiro;
-    public String txtTrecho;
-    public String numLote;
-    public String numRessarcimento;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date dataInclusao;
 
     public String retornarCreateSQL() throws DespesaReflectionException {
         ArrayList<String> listaCampos = retornarCampos();
@@ -113,8 +108,9 @@ public class Despesa {
 
             try {
                 String valor = BeanUtils.getProperty(this, campo);
-                sb.append("'" + valor.replaceAll("'", "''").replaceAll("\"", "\"\"") + "', "); // Replace dos caracteres ' e "
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                if (valor == null) valor = "";
+                sb.append("'").append(valor.replaceAll("'", "''").replaceAll("\"", "\"\"")).append("', "); // Replace dos caracteres ' e "
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NullPointerException e) {
                 throw new DespesaReflectionException(e);
             }
         }
@@ -131,8 +127,8 @@ public class Despesa {
 
         Field[] campos = classe.getFields();
         ArrayList<String> listaCampos = new ArrayList<String>();
-        for (int i = 0; i < campos.length; i++) {
-            listaCampos.add(campos[i].getName());
+        for (Field campo : campos) {
+            listaCampos.add(campo.getName());
         }
         Collections.sort(listaCampos);
 
@@ -140,215 +136,215 @@ public class Despesa {
     }
 
     public String toString() {
-        return txNomeParlamentar + "(" + sgPartido + "/" + sgUF + ")";
+        return nomeParlamentar + "(" + siglaPartido + "/" + siglaUF + ")";
     }
 
-    public String getTxNomeParlamentar() {
-        return txNomeParlamentar;
+    public String getNomeParlamentar() {
+        return nomeParlamentar;
     }
 
-    public void setTxNomeParlamentar(String txNomeParlamentar) {
-        this.txNomeParlamentar = txNomeParlamentar;
+    public void setNomeParlamentar(String nomeParlamentar) {
+        this.nomeParlamentar = nomeParlamentar;
     }
 
-    public String getIdecadastro() {
-        return idecadastro;
+    public String getIdDeputado() {
+        return idDeputado;
     }
 
-    public void setIdecadastro(String idecadastro) {
-        this.idecadastro = idecadastro;
+    public void setIdDeputado(String idDeputado) {
+        this.idDeputado = idDeputado;
     }
 
-    public String getNuCarteiraParlamentar() {
-        return nuCarteiraParlamentar;
+    public String getNumeroCarteiraParlamentar() {
+        return numeroCarteiraParlamentar;
     }
 
-    public void setNuCarteiraParlamentar(String nuCarteiraParlamentar) {
-        this.nuCarteiraParlamentar = nuCarteiraParlamentar;
+    public void setNumeroCarteiraParlamentar(String numeroCarteiraParlamentar) {
+        this.numeroCarteiraParlamentar = numeroCarteiraParlamentar;
     }
 
-    public String getNuLegislatura() {
-        return nuLegislatura;
+    public String getLegislatura() {
+        return legislatura;
     }
 
-    public void setNuLegislatura(String nuLegislatura) {
-        this.nuLegislatura = nuLegislatura;
+    public void setLegislatura(String legislatura) {
+        this.legislatura = legislatura;
     }
 
-    public String getSgUF() {
-        return sgUF;
+    public String getSiglaUF() {
+        return siglaUF;
     }
 
-    public void setSgUF(String sgUF) {
-        this.sgUF = sgUF;
+    public void setSiglaUF(String siglaUF) {
+        this.siglaUF = siglaUF;
     }
 
-    public String getSgPartido() {
-        return sgPartido;
+    public String getSiglaPartido() {
+        return siglaPartido;
     }
 
-    public void setSgPartido(String sgPartido) {
-        this.sgPartido = sgPartido;
+    public void setSiglaPartido(String siglaPartido) {
+        this.siglaPartido = siglaPartido;
     }
 
-    public String getCodLegislatura() {
-        return codLegislatura;
+    public String getCodigoLegislatura() {
+        return codigoLegislatura;
     }
 
-    public void setCodLegislatura(String codLegislatura) {
-        this.codLegislatura = codLegislatura;
+    public void setCodigoLegislatura(String codigoLegislatura) {
+        this.codigoLegislatura = codigoLegislatura;
     }
 
-    public String getNumSubCota() {
-        return numSubCota;
+    public String getNumeroSubCota() {
+        return numeroSubCota;
     }
 
-    public void setNumSubCota(String numSubCota) {
-        this.numSubCota = numSubCota;
+    public void setNumeroSubCota(String numeroSubCota) {
+        this.numeroSubCota = numeroSubCota;
     }
 
-    public String getTxtDescricao() {
-        return txtDescricao;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setTxtDescricao(String txtDescricao) {
-        this.txtDescricao = txtDescricao;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public String getNumEspecificacaoSubCota() {
-        return numEspecificacaoSubCota;
+    public String getNumeroEspecificacaoSubCota() {
+        return numeroEspecificacaoSubCota;
     }
 
-    public void setNumEspecificacaoSubCota(String numEspecificacaoSubCota) {
-        this.numEspecificacaoSubCota = numEspecificacaoSubCota;
+    public void setNumeroEspecificacaoSubCota(String numeroEspecificacaoSubCota) {
+        this.numeroEspecificacaoSubCota = numeroEspecificacaoSubCota;
     }
 
-    public String getTxtDescricaoEspecificacao() {
-        return txtDescricaoEspecificacao;
+    public String getDescricaoEspecificacao() {
+        return descricaoEspecificacao;
     }
 
-    public void setTxtDescricaoEspecificacao(String txtDescricaoEspecificacao) {
-        this.txtDescricaoEspecificacao = txtDescricaoEspecificacao;
+    public void setDescricaoEspecificacao(String descricaoEspecificacao) {
+        this.descricaoEspecificacao = descricaoEspecificacao;
     }
 
-    public String getTxtFornecedor() {
-        return txtFornecedor;
+    public String getFornecedor() {
+        return fornecedor;
     }
 
-    public void setTxtFornecedor(String txtFornecedor) {
-        this.txtFornecedor = txtFornecedor;
+    public void setFornecedor(String fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
-    public String getTxtCNPJCPF() {
-        return txtCNPJCPF;
+    public String getCnpjCPF() {
+        return cnpjCPF;
     }
 
-    public void setTxtCNPJCPF(String txtCNPJCPF) {
-        this.txtCNPJCPF = txtCNPJCPF;
+    public void setCnpjCPF(String cnpjCPF) {
+        this.cnpjCPF = cnpjCPF;
     }
 
-    public String getTxtNumero() {
-        return txtNumero;
+    public String getNumero() {
+        return numero;
     }
 
-    public void setTxtNumero(String txtNumero) {
-        this.txtNumero = txtNumero;
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
-    public String getIndTipoDocumento() {
-        return indTipoDocumento;
+    public String getTipoDocumento() {
+        return tipoDocumento;
     }
 
-    public void setIndTipoDocumento(String indTipoDocumento) {
-        this.indTipoDocumento = indTipoDocumento;
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
 
-    public String getDatEmissao() {
-        return datEmissao;
+    public String getDataEmissao() {
+        return dataEmissao;
     }
 
-    public void setDatEmissao(String datEmissao) {
-        this.datEmissao = datEmissao;
+    public void setDataEmissao(String dataEmissao) {
+        this.dataEmissao = dataEmissao;
     }
 
-    public String getVlrDocumento() {
-        return vlrDocumento;
+    public String getValorDocumento() {
+        return valorDocumento;
     }
 
-    public void setVlrDocumento(String vlrDocumento) {
-        this.vlrDocumento = vlrDocumento;
+    public void setValorDocumento(String valorDocumento) {
+        this.valorDocumento = valorDocumento;
     }
 
-    public String getVlrGlosa() {
-        return vlrGlosa;
+    public String getValorGlosa() {
+        return valorGlosa;
     }
 
-    public void setVlrGlosa(String vlrGlosa) {
-        this.vlrGlosa = vlrGlosa;
+    public void setValorGlosa(String valorGlosa) {
+        this.valorGlosa = valorGlosa;
     }
 
-    public String getVlrLiquido() {
-        return vlrLiquido;
+    public String getValorLiquido() {
+        return valorLiquido;
     }
 
-    public void setVlrLiquido(String vlrLiquido) {
-        this.vlrLiquido = vlrLiquido;
+    public void setValorLiquido(String valorLiquido) {
+        this.valorLiquido = valorLiquido;
     }
 
-    public String getNumMes() {
-        return numMes;
+    public String getMes() {
+        return mes;
     }
 
-    public void setNumMes(String numMes) {
-        this.numMes = numMes;
+    public void setMes(String mes) {
+        this.mes = mes;
     }
 
-    public String getNumAno() {
-        return numAno;
+    public String getAno() {
+        return ano;
     }
 
-    public void setNumAno(String numAno) {
-        this.numAno = numAno;
+    public void setAno(String ano) {
+        this.ano = ano;
     }
 
-    public String getNumParcela() {
-        return numParcela;
+    public String getParcela() {
+        return parcela;
     }
 
-    public void setNumParcela(String numParcela) {
-        this.numParcela = numParcela;
+    public void setParcela(String parcela) {
+        this.parcela = parcela;
     }
 
-    public String getTxtPassageiro() {
-        return txtPassageiro;
+    public String getPassageiro() {
+        return passageiro;
     }
 
-    public void setTxtPassageiro(String txtPassageiro) {
-        this.txtPassageiro = txtPassageiro;
+    public void setPassageiro(String passageiro) {
+        this.passageiro = passageiro;
     }
 
-    public String getTxtTrecho() {
-        return txtTrecho;
+    public String getTrecho() {
+        return trecho;
     }
 
-    public void setTxtTrecho(String txtTrecho) {
-        this.txtTrecho = txtTrecho;
+    public void setTrecho(String trecho) {
+        this.trecho = trecho;
     }
 
-    public String getNumLote() {
-        return numLote;
+    public String getLote() {
+        return lote;
     }
 
-    public void setNumLote(String numLote) {
-        this.numLote = numLote;
+    public void setLote(String lote) {
+        this.lote = lote;
     }
 
-    public String getNumRessarcimento() {
-        return numRessarcimento;
+    public String getRessarcimento() {
+        return ressarcimento;
     }
 
-    public void setNumRessarcimento(String numRessarcimento) {
-        this.numRessarcimento = numRessarcimento;
+    public void setRessarcimento(String ressarcimento) {
+        this.ressarcimento = ressarcimento;
     }
 
     public Date getDataInclusao() {

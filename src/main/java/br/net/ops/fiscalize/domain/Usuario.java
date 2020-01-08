@@ -1,6 +1,6 @@
 package br.net.ops.fiscalize.domain;
 
-import java.util.List;
+import com.google.gson.annotations.Expose;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,107 +8,108 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.List;
 
-import com.google.gson.annotations.Expose;
-
-@Entity
+@Entity(name = "usuario")
 public class Usuario {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Expose private Integer usuarioId;
-	private String usuario;
-	private String senha;
-	private String facebookId;
-	@Expose private String tokenId;
-	private String nome;
-	private String email;
-	private Boolean experiente;
-	
-	@OneToMany(mappedBy="usuario", fetch = FetchType.LAZY)
-	private List<Suspeita> suspeitas = null;
-	
-	@OneToMany(mappedBy="usuario", fetch = FetchType.LAZY)
-	private List<Analise> analises = null;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Expose
+    private Integer usuarioId;
+    private String usuario;
+    private String senha;
+    private String facebookId;
+    @Expose
+    private String tokenId;
+    private String nome;
+    private String email;
+    private Boolean experiente;
 
-	public Integer getUsuarioId() {
-		return usuarioId;
-	}
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Suspeita> suspeitas = null;
 
-	public void setUsuarioId(Integer usuarioId) {
-		this.usuarioId = usuarioId;
-	}
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Analise> analises = null;
 
-	public String getUsuario() {
-		return usuario;
-	}
+    public Integer getUsuarioId() {
+        return usuarioId;
+    }
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
+    }
 
-	public String getSenha() {
-		return senha;
-	}
+    public String getUsuario() {
+        return usuario;
+    }
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
 
-	public String getFacebookId() {
-		return facebookId;
-	}
+    public String getSenha() {
+        return senha;
+    }
 
-	public void setFacebookId(String facebookId) {
-		this.facebookId = facebookId;
-	}
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
-	public String getTokenId() {
-		return tokenId;
-	}
+    public String getFacebookId() {
+        return facebookId;
+    }
 
-	public void setTokenId(String tokenId) {
-		this.tokenId = tokenId;
-	}
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public String getTokenId() {
+        return tokenId;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public Boolean getExperiente() {
-		return experiente;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setExperiente(Boolean experiente) {
-		this.experiente = experiente;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public List<Suspeita> getSuspeitas() {
-		return suspeitas;
-	}
+    public Boolean getExperiente() {
+        return experiente;
+    }
 
-	public void setSuspeitas(List<Suspeita> suspeitas) {
-		this.suspeitas = suspeitas;
-	}
+    public void setExperiente(Boolean experiente) {
+        this.experiente = experiente;
+    }
 
-	public List<Analise> getAnalises() {
-		return analises;
-	}
+    public List<Suspeita> getSuspeitas() {
+        return suspeitas;
+    }
 
-	public void setAnalises(List<Analise> analises) {
-		this.analises = analises;
-	}
-	
+    public void setSuspeitas(List<Suspeita> suspeitas) {
+        this.suspeitas = suspeitas;
+    }
+
+    public List<Analise> getAnalises() {
+        return analises;
+    }
+
+    public void setAnalises(List<Analise> analises) {
+        this.analises = analises;
+    }
+
 }
