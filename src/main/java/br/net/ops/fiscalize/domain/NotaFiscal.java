@@ -93,7 +93,7 @@ public class NotaFiscal {
 
     public static Date retornarDataEmissao(String data) {
         Date retorno;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
             retorno = sdf.parse(data);
         } catch (ParseException | NullPointerException e) {
